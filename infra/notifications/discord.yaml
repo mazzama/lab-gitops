@@ -15,6 +15,10 @@ metadata:
   name: discord-notifications
   namespace: flux-system
 spec:
+  summary: "🏠 Lab"
+  eventMetadata:
+    env: production
+    cluster: k3s-lab
   providerRef:
     name: discord
   eventSeverity: info
