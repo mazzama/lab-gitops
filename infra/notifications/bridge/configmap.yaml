@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flux-discord-bridge
+  namespace: flux-system
+data:
+  bridge.py: |
+    #!/usr/bin/env python3
+    # Flux -> Discord bridge: fetches commit message from GitHub and posts a pretty embed.
+    import json, os, re, urllib.request
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+
+    GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
+    GITHUB_REPO = os.environ.get("GITHUB_REPO", "mazzama/lab-gitops")
+    DISCORD_URL = os.environ.get("DISCORD_URL", "")
+    DISCORD_USERNAME = os.environ.get("DISCORD_USERNAME", "FluxCD")
+
+    def get_commit(sha):
+        if not GITHUB_TOKEN or not sha:
+            return None
+        try:
+            req = urllib.request.Request(f"https://api.github.com/repos/{GITHUB_REPO}/commits/{sha}")
+            req.add_header("Authorization", f"Bearer {GITHUB_TOKEN}")
+            req.add_header("Accept", "application/vnd.github+json")
+            req.add_header("X-GitHub-Api-Version", "2022-11-28")
+            with urllib.request.urlopen(req, timeout=10) as r:
+                return json.load(r)
+        except Exception as e:
+            print(f"commit fetch failed: {e}")
+            return None
+
+    def send_discord(embed):
+        payload = {"username": DISCORD_USERNAME, "embeds": [embed]}
+        try:
+            req = urllib.request.Request(
+                DISCORD_URL,
+                data=json.dumps(payload).encode(),
+                headers={"Content-Type": "application/json"},
+            )
+            with urllib.request.urlopen(req, timeout=10) as r:
+                return r.status
+        except Exception as e:
+            print(f"discord send failed: {e}")
+            return 500
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_POST(self):
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                event = json.loads(self.rfile.read(length) or b"{}")
+                involved = event.get("involvedObject", {})
+                kind = involved.get("kind", "?")
+                name = involved.get("name", "?")
+                message = event.get("message", "")
+                severity = event.get("severity", "info")
+                reason = event.get("reason", "")
+                meta = event.get("metadata", {})
+                revision = meta.get("kustomize.toolkit.fluxcd.io/revision", "") or meta.get("helm.toolkit.fluxcd.io/revision", "")
+                m = re.search(r"sha1:([0-9a-f]{40})", revision)
+                sha = m.group(1) if m else ""
+                commit = get_commit(sha) if sha else None
+                if commit:
+                    cm = commit.get("commit", {})
+                    title = cm.get("message", "").split("\n")[0]
+                    author = cm.get("author", {}).get("name", "unknown")
+                    url = commit.get("html_url", "")
+                    desc = f"**{title}**\nby {author}"
+                    footer = f"{GITHUB_REPO} · {sha[:7]}"
+                else:
+                    title = f"{kind}/{name}"
+                    desc = message or "reconciled"
+                    url = ""
+                    footer = f"{GITHUB_REPO} · {revision or n/a}"
+                ok = severity != "error"
+                embed = {
+                    "title": f"{title} — {reason}",
+                    "description": desc,
+                    "color": 3066993 if ok else 15158332,
+                    "fields": [
+                        {"name": "Revision", "value": revision or "\u2014", "inline": True},
+                        {"name": "Severity", "value": severity, "inline": True},
+                    ],
+                    "footer": {"text": footer},
+                }
+                if url:
+                    embed["url"] = url
+                status = send_discord(embed)
+                self.send_response(200 if status else 500)
+            except Exception as e:
+                print(f"handler error: {e}")
+                self.send_response(500)
+            self.end_headers()
+
+        def log_message(self, *a):
+            pass
+
+    if __name__ == "__main__":
+        HTTPServer(("0.0.0.0", 8080), Handler).serve_forever()

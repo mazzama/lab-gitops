@@ -4,10 +4,8 @@ metadata:
   name: discord
   namespace: flux-system
 spec:
-  type: discord
-  username: FluxCD
-  secretRef:
-    name: discord-url
+  type: generic
+  address: http://flux-discord-bridge.flux-system.svc.cluster.local:8080/
 ---
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
@@ -15,7 +13,7 @@ metadata:
   name: discord-notifications
   namespace: flux-system
 spec:
-  summary: "🏠 Lab"
+  summary: "\U0001F3E0 Lab"
   eventMetadata:
     env: production
     cluster: k3s-lab
