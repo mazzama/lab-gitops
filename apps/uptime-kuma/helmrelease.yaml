@@ -28,7 +28,7 @@ spec:
       size: 2Gi
     ingress:
       enabled: true
-      className: traefik
+      ingressClassName: traefik
       hosts:
         - host: ""
           paths:
