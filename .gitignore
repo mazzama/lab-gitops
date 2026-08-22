@@ -1,0 +1,19 @@
+# Flux / kubeconfig
+.kube/
+kubeconfig
+*.kubeconfig
+
+# Local secrets (never commit)
+*.pem
+*.key
+.env
+.env.*
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Local artifacts
+*.dump
+*.tar.gz
