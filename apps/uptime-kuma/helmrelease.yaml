@@ -1,0 +1,42 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: helmforge
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://repo.helmforge.dev
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: uptime-kuma
+  namespace: app-dev
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: uptime-kuma
+      version: "1.5.x"
+      sourceRef:
+        kind: HelmRepository
+        name: helmforge
+  values:
+    persistence:
+      enabled: true
+      size: 2Gi
+    ingress:
+      enabled: true
+      className: traefik
+      hosts:
+        - host: ""
+          paths:
+            - path: /kuma
+              pathType: Prefix
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 512Mi
+        cpu: "1"
