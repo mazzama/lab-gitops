@@ -21,4 +21,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: cnpg
-  values: {}
+  targetNamespace: cnpg-system
+  install:
+    createNamespace: true
