@@ -32,7 +32,7 @@ spec:
       hosts:
         - host: ""
           paths:
-            - path: /kuma
+            - path: /
               pathType: Prefix
     resources:
       requests:
