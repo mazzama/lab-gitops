@@ -27,13 +27,11 @@ spec:
       enabled: true
       size: 2Gi
     ingress:
-      enabled: true
-      ingressClassName: traefik
-      hosts:
-        - host: ""
-          paths:
-            - path: /
-              pathType: Prefix
+      enabled: false
+    service:
+      type: NodePort
+      port: 80
+      nodePort: 32000
     resources:
       requests:
         memory: 128Mi
