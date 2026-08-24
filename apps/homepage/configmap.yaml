@@ -22,7 +22,7 @@ data:
             description: Metrics & dashboards
             icon: sh-grafana
         - Uptime Kuma:
-            href: http://192.168.0.28:32000
+            href: http://192.168.0.28:32196
             description: Uptime monitoring
             icon: sh-uptimekuma
         - MinIO Console:
