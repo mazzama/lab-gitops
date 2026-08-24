@@ -45,7 +45,8 @@ spec:
       - name: redis-exporter
         image: oliver006/redis_exporter:latest
         ports:
-        - containerPort: 9121
+        - name: exporter
+          containerPort: 9121
         env:
         - name: REDIS_ADDR
           value: redis://localhost:6379
