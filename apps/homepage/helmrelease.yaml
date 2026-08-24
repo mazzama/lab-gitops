@@ -23,6 +23,8 @@ spec:
         name: jameswynn
         namespace: flux-system
   values:
+    env:
+      HOMEPAGE_ALLOWED_HOSTS: 192.168.0.28
     ingress:
       main:
         enabled: true
