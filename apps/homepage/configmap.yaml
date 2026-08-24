@@ -42,6 +42,9 @@ data:
             href: http://192.168.0.28/grafana
             description: "Redis 8 (via Grafana)"
             icon: sh-redis
+  bookmarks.yaml: |
+  docker.yaml: |
+  kubernetes.yaml: |
   widgets.yaml: |
     - kubernetes:
         cluster:
