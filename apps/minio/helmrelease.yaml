@@ -41,6 +41,10 @@ spec:
       type: NodePort
       port: 9000
       nodePort: 31900
+    consoleService:
+      type: NodePort
+      port: 9001
+      nodePort: 31901
     resources:
       requests:
         memory: 256Mi
