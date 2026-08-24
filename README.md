@@ -49,7 +49,6 @@ Current workloads running in the cluster (single node `docker`, k3s v1.36):
 |---|---|---|
 | `app-dev` | `homepage-*` | Dashboard front door |
 | `app-dev` | `uptime-kuma-*` | Uptime monitoring |
-| `app-dev` | `hello-test-*` | Test app (can be removed) |
 | `lab-infra` | `pg-lab-1` | PostgreSQL 18 primary (CNPG) |
 | `lab-infra` | `redis-0` | Redis 8 + metrics exporter |
 | `storage` | `minio-*` | S3-compatible object storage |
@@ -59,7 +58,6 @@ Current workloads running in the cluster (single node `docker`, k3s v1.36):
 | `monitoring` | `kube-prometheus-stack-*` | Operator, kube-state-metrics, node-exporter |
 | `cnpg-system` | `cnpg-cloudnative-pg-*` | CloudNativePG operator |
 | `flux-system` | `helm-controller` / `kustomize-controller` / `source-controller` / `notification-controller` | Flux controllers |
-| `flux-system` | `flux-discord-bridge-*` | Optional commit-message bridge (dormant) |
 | `kube-system` | `traefik-*`, `coredns-*`, `local-path-provisioner-*`, `metrics-server-*`, `svclb-*` | k3s built-ins |
 
 ## Access (LAN)
