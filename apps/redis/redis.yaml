@@ -42,6 +42,11 @@ spec:
           limits:
             memory: 512Mi
             cpu: "1"
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: config
+          mountPath: /usr/local/etc/redis
       - name: redis-exporter
         image: oliver006/redis_exporter:latest
         ports:
@@ -57,11 +62,6 @@ spec:
           limits:
             memory: 128Mi
             cpu: 200m
-        volumeMounts:
-        - name: data
-          mountPath: /data
-        - name: config
-          mountPath: /usr/local/etc/redis
       volumes:
       - name: config
         configMap:
