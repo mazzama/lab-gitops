@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+  namespace: app-dev
+data:
+  settings.yaml: |
+    title: "Azzam Lab"
+    theme: dark
+    color: slate
+    layout:
+      Infrastructure:
+        style: row
+        columns: 4
+      Databases:
+        style: row
+        columns: 3
+  services.yaml: |
+    - Infrastructure:
+        - Grafana:
+            href: http://192.168.0.28/grafana
+            description: Metrics & dashboards
+            icon: sh-grafana
+        - Uptime Kuma:
+            href: http://192.168.0.28:32000
+            description: Uptime monitoring
+            icon: sh-uptimekuma
+        - MinIO Console:
+            href: http://192.168.0.28:31901
+            description: S3 storage
+            icon: sh-minio
+        - Proxmox:
+            href: https://192.168.0.27:8006
+            description: Virtualization
+            icon: sh-proxmox
+    - Databases:
+        - PostgreSQL:
+            href: http://192.168.0.28/grafana
+            description: "PG 18 (via Grafana)"
+            icon: sh-postgresql
+        - Redis:
+            href: http://192.168.0.28/grafana
+            description: "Redis 8 (via Grafana)"
+            icon: sh-redis
+  widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+    - system:
+        uptime: true
+        cpu: true
+        memory: true
+        disk: /
