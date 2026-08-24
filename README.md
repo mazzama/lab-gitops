@@ -41,6 +41,27 @@ Changes are made by **pushing to `main`** — never by editing the cluster direc
 - `infra` Kustomization → `./infra`
 - Reconcile interval: 10m (or `flux reconcile kustomization <name>` for instant)
 
+## Pods
+
+Current workloads running in the cluster (single node `docker`, k3s v1.36):
+
+| Namespace | Pod | Purpose |
+|---|---|---|
+| `app-dev` | `homepage-*` | Dashboard front door |
+| `app-dev` | `uptime-kuma-*` | Uptime monitoring |
+| `app-dev` | `hello-test-*` | Test app (can be removed) |
+| `lab-infra` | `pg-lab-1` | PostgreSQL 18 primary (CNPG) |
+| `lab-infra` | `redis-0` | Redis 8 + metrics exporter |
+| `storage` | `minio-*` | S3-compatible object storage |
+| `monitoring` | `prometheus-*` | Prometheus (metrics collection) |
+| `monitoring` | `kube-prometheus-stack-grafana-*` | Grafana dashboards |
+| `monitoring` | `alertmanager-*` | Alert routing |
+| `monitoring` | `kube-prometheus-stack-*` | Operator, kube-state-metrics, node-exporter |
+| `cnpg-system` | `cnpg-cloudnative-pg-*` | CloudNativePG operator |
+| `flux-system` | `helm-controller` / `kustomize-controller` / `source-controller` / `notification-controller` | Flux controllers |
+| `flux-system` | `flux-discord-bridge-*` | Optional commit-message bridge (dormant) |
+| `kube-system` | `traefik-*`, `coredns-*`, `local-path-provisioner-*`, `metrics-server-*`, `svclb-*` | k3s built-ins |
+
 ## Access (LAN)
 
 | Service | URL |
