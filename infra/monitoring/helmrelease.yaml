@@ -22,6 +22,15 @@ spec:
         kind: HelmRepository
         name: prometheus-community
         namespace: flux-system
+  valuesFrom:
+  - kind: Secret
+    name: grafana-admin
+    valuesKey: admin-user
+    targetPath: grafana.adminUser
+  - kind: Secret
+    name: grafana-admin
+    valuesKey: admin-password
+    targetPath: grafana.adminPassword
   values:
     prometheus:
       prometheusSpec:
@@ -34,8 +43,7 @@ spec:
             memory: 1Gi
             cpu: "1"
     grafana:
-      adminPassword: "grafana-ab4ca092361eae658072"
-      ingress:
+        ingress:
         enabled: true
         ingressClassName: traefik
         path: /grafana
