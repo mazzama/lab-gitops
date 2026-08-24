@@ -28,6 +28,7 @@ spec:
         name: minio
         namespace: flux-system
   values:
+    mode: standalone
     replicas: 1
     drivesPerNode: 1
     rootUser: "minioadmin"
