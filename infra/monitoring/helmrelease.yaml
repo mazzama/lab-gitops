@@ -34,7 +34,7 @@ spec:
             memory: 1Gi
             cpu: "1"
     grafana:
-      adminPassword: "prom-operator"
+      adminPassword: "grafana-ab4ca092361eae658072"
       ingress:
         enabled: true
         ingressClassName: traefik
