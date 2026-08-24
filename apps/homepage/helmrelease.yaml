@@ -30,7 +30,7 @@ spec:
         enabled: true
         ingressClassName: traefik
         hosts:
-          - host: ""
+          - host: home.azzam-lab
             paths:
               - path: /
                 pathType: Prefix
