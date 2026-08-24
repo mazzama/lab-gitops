@@ -27,17 +27,9 @@ spec:
         kind: HelmRepository
         name: minio
         namespace: flux-system
-  valuesFrom:
-  - kind: Secret
-    name: minio-credentials
-    valuesKey: rootUser
-    targetPath: rootUser
-  - kind: Secret
-    name: minio-credentials
-    valuesKey: rootPassword
-    targetPath: rootPassword
   values:
     mode: standalone
+    existingSecret: minio-credentials
     replicas: 1
     drivesPerNode: 1
     persistence:
