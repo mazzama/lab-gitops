@@ -46,9 +46,11 @@ spec:
       ingress:
         enabled: true
         ingressClassName: traefik
-        path: /grafana
-        pathType: Prefix
-        hosts: [""]
+        hosts:
+          - host: grafana.azzam-lab
+            paths:
+              - path: /
+                pathType: Prefix
       grafana.ini:
         server:
           root_url: "%(protocol)s://%(domain)s/grafana"
