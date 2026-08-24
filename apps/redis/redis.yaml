@@ -94,6 +94,8 @@ kind: PodMonitor
 metadata:
   name: redis
   namespace: lab-infra
+  labels:
+    release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:

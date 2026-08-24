@@ -22,6 +22,8 @@ spec:
       max_connections: "200"
   monitoring:
     enablePodMonitor: true
+    podMonitorLabels:
+      release: kube-prometheus-stack
   bootstrap:
     initdb:
       database: app
