@@ -46,11 +46,14 @@ spec:
       ingress:
         enabled: true
         ingressClassName: traefik
-        hosts:
-          - host: grafana.azzam-lab
-            paths:
-              - path: /
-                pathType: Prefix
+        # grafana chart >= 8.10 (bundled with kube-prometheus-stack 69.x):
+        # `hosts` must be a list of strings and `path`/`pathType` moved to the
+        # ingress level. The old `hosts: [{host, paths}]` shape fails the render
+        # (templates/ingress.yaml:37: wrong type for value; expected string).
+        # Empty hosts = serve on any host, so /grafana stays reachable by IP.
+        path: /grafana
+        pathType: Prefix
+        hosts: []
       grafana.ini:
         server:
           root_url: "%(protocol)s://%(domain)s/grafana"
