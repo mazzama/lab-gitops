@@ -20,7 +20,7 @@ spec:
     cluster: k3s-lab
   providerRef:
     name: discord
-  eventSeverity: info
+  eventSeverity: error
   eventSources:
     - kind: Kustomization
       name: "*"
