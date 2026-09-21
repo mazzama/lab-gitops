@@ -14,10 +14,10 @@ metadata:
   name: discord-notifications
   namespace: flux-system
 spec:
-  summary: "\U0001F3E0 Lab"
   eventMetadata:
     env: production
     cluster: k3s-lab
+    summary: "\U0001F3E0 Lab"
   providerRef:
     name: discord
   eventSeverity: error
